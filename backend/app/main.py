@@ -3,6 +3,11 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.routers import analyze, auth
+import bcrypt
+import passlib
+
+print("bcrypt:", bcrypt.__version__)
+print("passlib:", passlib.__version__)
 
 app = FastAPI(
     title=settings.app_name,

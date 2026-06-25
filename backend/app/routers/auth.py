@@ -9,6 +9,9 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 
 @router.post("/register", response_model=UserResponse, status_code=201)
 def register(payload: UserCreate, db: Session = Depends(get_db)):
+     print("Password:", repr(payload.password))
+    print("Length:", len(payload.password))
+    print("Bytes:", len(payload.password.encode("utf-8")))
     try:
         existing = db.query(User).filter(User.email == payload.email).first()
         if existing:
