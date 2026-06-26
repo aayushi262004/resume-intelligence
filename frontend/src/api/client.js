@@ -57,3 +57,12 @@ export async function listAnalyses(token) {
   });
   return handleResponse(res);
 }
+export async function googleLogin(token) {
+  const res = await fetch(`${API_URL}/auth/google`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ token }),
+  });
+
+  return handleResponse(res);
+}

@@ -1,4 +1,3 @@
-# backend/app/models/user.py
 from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.sql import func
 from app.core.database import Base
@@ -8,5 +7,12 @@ class User(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     email = Column(String, unique=True, index=True, nullable=False)
-    hashed_password = Column(String, nullable=False)
+
+    # Nullable because Google users won't have a password
+    hashed_password = Column(String, nullable=True)
+
+    # New columns
+    provider = Column(String, nullable=False, default="local")
+    google_id = Column(String, unique=True, nullable=True)
+
     created_at = Column(DateTime(timezone=True), server_default=func.now())

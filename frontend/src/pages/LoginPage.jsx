@@ -1,8 +1,9 @@
 // src/pages/LoginPage.jsx
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { loginUser } from "../api/client";
+import { loginUser, googleLogin } from "../api/client";
 import { useAuth } from "../context/AuthContext";
+import { GoogleLogin } from "@react-oauth/google";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -69,6 +70,30 @@ export default function LoginPage() {
         >
           {loading ? "Logging in..." : "Log in"}
         </button>
+
+        <div className="my-5 flex items-center">
+          <div className="flex-1 border-t border-slate-200"></div>
+          <span className="px-3 text-sm text-slate-400">OR</span>
+          <div className="flex-1 border-t border-slate-200"></div>
+        </div>
+
+        <div className="flex justify-center">
+          <GoogleLogin
+            onSuccess={async (credentialResponse) => {
+              try {
+                const data = await googleLogin(credentialResponse.credential);
+
+                login(data.access_token);
+                navigate("/upload");
+              } catch (err) {
+                setError(err.message);
+              }
+            }}
+            onError={() => {
+              setError("Google login failed");
+            }}
+          />
+        </div>
 
         <p className="text-sm text-slate-500 mt-5 text-center">
           No account? <Link to="/register" className="text-indigo-600 font-medium">Register</Link>
